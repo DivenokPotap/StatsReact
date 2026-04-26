@@ -100,7 +100,7 @@ function App() {
   };
 
   useEffect(() => {
-    document.body.style.backgroundColor = theme === 'dark' ? '#000' : ' #94c3fe';
+    document.body.style.backgroundColor = theme === 'dark' ? '#24262e' : ' #94c3fe';
     document.body.style.color = theme === 'dark' ? '#fff' : '#000';
   }, [theme]);
   return (
