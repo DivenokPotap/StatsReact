@@ -1,68 +1,67 @@
-import { useState,useEffect } from 'react'
+import { useState,useEffect,createContext } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './App.css'
 
-const useToggle=(initialState=false)=>{
-  const [isOpen,setIsOpen]=useState(initialState)
-  const open=()=>{
-    setIsOpen(true);
-  }
-  const close=()=>{
-    setIsOpen(false);
-  }
-  const toggle=()=>{
-    setIsOpen(!isOpen)
-  }
-  return{
-    isOpen,
-    open,
-    close,
-    toggle,
-  }
-}
+// const useToggle=(initialState=false)=>{
+//   const [isOpen,setIsOpen]=useState(initialState)
+//   const open=()=>{
+//     setIsOpen(true);
+//   }
+//   const close=()=>{
+//     setIsOpen(false);
+//   }
+//   const toggle=()=>{
+//     setIsOpen(!isOpen)
+//   }
+//   return{
+//     isOpen,
+//     open,
+//     close,
+//     toggle,
+//   }
+// }
 
-const Count=()=>{
-  const [count,setCount]=useState(0)
-  useEffect(
-    ()=>{
-      document.title=`Count:${count}`
-    },[count]
-  )
-  return(
-    <div>
-      <h1>Counter:{count}</h1>
-      <button onClick={()=>setCount(count+1)}>+</button>
-      <button onClick={()=>setCount(count-1)}>-</button>
-    </div>
-  )
-}
+// const Count=()=>{
+//   const [count,setCount]=useState(0)
+//   useEffect(
+//     ()=>{
+//       document.title=`Count:${count}`
+//     },[count]
+//   )
+//   return(
+//     <div>
+//       <h1>Counter:{count}</h1>
+//       <button onClick={()=>setCount(count+1)}>+</button>
+//       <button onClick={()=>setCount(count-1)}>-</button>
+//     </div>
+//   )
+// }
 
-const Modal=({isOpen,onClose})=>{
-  if(!isOpen) return null;
-  return(
-    <div>
-      <div>
-        <h2>Modal</h2>
-        <p>Test modal</p>
-        <button onClick={onClose}>close</button>
-      </div>
-    </div>
-  )
-}
-const ModalExample=()=>{
-  const {isOpen,open,close,toggle}=useToggle()
-  return(
-    <div>
-<button onClick={open}>Open</button>
-<button onClick={close}>Close</button>
-<button onClick={toggle}>Toggle</button>
-<Modal isOpen={isOpen} onClose={close}/>
-  </div>
-  )
-}
-
+// const Modal=({isOpen,onClose})=>{
+//   if(!isOpen) return null;
+//   return(
+//     <div>
+//       <div>
+//         <h2>Modal</h2>
+//         <p>Test modal</p>
+//         <button onClick={onClose}>close</button>
+//       </div>
+//     </div>
+//   )
+// }
+// const ModalExample=()=>{
+//   const {isOpen,open,close,toggle}=useToggle()
+//   return(
+//     <div>
+// <button onClick={open}>Open</button>
+// <button onClick={close}>Close</button>
+// <button onClick={toggle}>Toggle</button>
+// <Modal isOpen={isOpen} onClose={close}/>
+//   </div>
+//   )
+// }
 const CountReview=()=>{
   const [good,setGood]=useState(0)
   const [neutral,setNeutral]=useState(0)
@@ -91,16 +90,31 @@ const CountReview=()=>{
   )
 }
 
+const ThemeContext = createContext()
+
 function App() {
+  const [theme,setTheme] = useState('dark');
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev ==='dark' ? 'light' : "dark"));
+  };
+
+  useEffect(() => {
+    document.body.style.backgroundColor = theme === 'dark' ? '#000' : ' #94c3fe';
+    document.body.style.color = theme === 'dark' ? '#fff' : '#000';
+  }, [theme]);
   return (
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
     <>
     {/* <Count></Count> */}
     {/* <ModalExample></ModalExample> */}
     <p>Please leave feedback</p>
     <div>
      <CountReview></CountReview>
+     <button className='toggle' onClick={toggleTheme}>Change theme</button>
     </div>
     </>
+    </ThemeContext.Provider>
   )
 }
 
